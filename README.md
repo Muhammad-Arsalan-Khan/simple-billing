@@ -49,4 +49,4 @@ It allows users to manage products, generate bills, maintain billing history, an
 
 1. **Clone or Download** this repository.  
    ```bash
-   git clone https://github.com/yourusername/billing-system.git
+   https://github.com/Muhammad-Arsalan-Khan/simple-billing.git
