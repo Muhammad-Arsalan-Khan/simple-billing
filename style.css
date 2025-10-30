@@ -1,0 +1,187 @@
+/* ---------- style.css - Professional Billing UI ---------- */
+
+/* Theme vars */
+:root{
+  --primary: #007bff;
+  --danger:  #dc3545;
+  --success: #28a745;
+  --card-bg: #ffffff;
+  --bg:     #f4f6f9;
+  --text:   #222;
+  --muted:  #6b7280;
+  --glass:  rgba(255,255,255,0.6);
+  --shadow: 0 8px 28px rgba(15,15,30,0.06);
+}
+
+/* Base */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:0;font-family:Inter, Poppins, system-ui, "Segoe UI", Roboto, Arial;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  transition: background .2s ease, color .2s ease;
+}
+
+/* App layout */
+.app{
+  max-width:1200px;
+  margin:22px auto;
+  display:grid;
+  grid-template-columns: 260px 1fr;
+  gap:20px;
+  padding:18px;
+}
+.card{
+  background:var(--card-bg);
+  padding:14px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+}
+
+/* Sidebar */
+.sidebar nav{ display:flex; flex-direction:column; gap:8px; }
+.nav-btn{
+  padding:10px 12px;
+  border-radius:8px;
+  text-align:left;
+  background:transparent;
+  border: none;
+  cursor:pointer;
+  font-weight:600;
+  color:var(--text);
+}
+.nav-btn.active{ background: rgba(0,123,255,0.06); color:var(--primary); }
+
+/* Header */
+header{display:flex; justify-content:space-between; align-items:center; gap:12px;}
+header h1{margin:0;font-size:1.2rem}
+header small{display:block;color:var(--muted);margin-top:4px}
+.header-actions{display:flex; gap:8px; align-items:center}
+
+/* Buttons/inputs */
+.btn{ padding:8px 10px; border-radius:8px; border:none; cursor:pointer; font-weight:600; }
+.btn-primary{ background:var(--primary); color:#fff; }
+.btn-danger{ background:var(--danger); color:#fff; }
+.btn-success{ background:var(--success); color:#fff; }
+
+/* Add product area */
+.add-section{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+.add-section input[type="file"]{ display:none; }
+input[type="text"], input[type="number"]{
+  padding:8px 10px; border-radius:8px; border:1px solid #e6e6e6; min-width:160px;
+}
+#search{ min-width:220px; padding:8px 10px; border-radius:8px; border:1px solid #e6e6e6; }
+
+/* Product grid */
+#product-list{
+  display:grid;
+  grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+  gap:14px;
+  margin-top:12px;
+}
+
+/* Product card */
+.product-item{
+  position:relative;
+  padding:10px;
+  border-radius:10px;
+  background: linear-gradient(180deg,#fff,#fbfcfe);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.04);
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.product-item:hover{ transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.08); }
+
+/* edit/delete buttons top-right */
+.editDeleteBtn{
+  position:absolute;
+  right:10px;
+  top:10px;
+  display:flex;
+  gap:6px;
+  z-index:5;
+}
+.editDeleteBtn button{
+  border:none; background:transparent; cursor:pointer; font-size:16px; padding:4px; border-radius:6px;
+}
+.editDeleteBtn button:hover{ background: rgba(0,0,0,0.06); }
+
+/* image */
+.product-image{ width:100%; height:140px; border-radius:8px; overflow:hidden; background:#f2f2f2; display:flex; align-items:center; justify-content:center; }
+.product-image img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* details */
+.product-details{ padding:4px 2px; }
+.product-name{ font-size:1.05rem; margin:0; font-weight:700; color:var(--text); }
+.product-price{ margin:4px 0 0; color:var(--muted); font-weight:600; }
+
+/* actions row: Add button + quantity inline */
+.product-actions{ display:flex; align-items:center; gap:8px; margin-top:6px; }
+.addBtn{
+  padding:8px 14px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:#fff;
+  font-weight:700;
+}
+.qty-inline{ display:flex; gap:6px; align-items:center; }
+.qty-inline button{ width:34px; height:34px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
+
+/* Cart */
+#cart{ display:grid; gap:8px; margin-top:10px; }
+.cart-item{
+  display:flex; gap:10px; align-items:center; padding:10px; border-radius:8px; background:#fafafa;
+}
+.cart-item img{ width:48px; height:48px; object-fit:cover; border-radius:6px; background:#fff; }
+.cart-actions{ margin-left:auto; display:flex; gap:8px; align-items:center; }
+
+/* Bill area */
+#bill-section{ margin-top:18px; }
+#bill-list{ margin-top:8px; }
+
+/* Table styles */
+table{ width:100%; border-collapse:collapse; margin-top:10px; min-width:520px; }
+th, td{ padding:10px; border:1px solid #e8e8e8; text-align:left; }
+th{ background:#f7f7f7; font-weight:700; }
+
+/* Last bill print button under bill */
+.print-btn-row{ margin-top:10px; display:flex; gap:8px; justify-content:flex-end; }
+
+/* Profile */
+.profile-row{ display:flex; gap:10px; align-items:flex-start; margin-bottom:12px; }
+.profile-row input{ width:100%; padding:8px 10px; border-radius:8px; border:1px solid #e6e6e6; }
+
+/* History list */
+.history-list{ display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+.history-item{ padding:10px; border-radius:8px; background:#fff; display:flex; gap:12px; align-items:center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+
+/* Responsive */
+@media (max-width:900px){
+  .app{ grid-template-columns: 1fr; padding:12px; }
+  #search{ width:100%; order:6; }
+  .product-image{ height:120px; }
+}
+
+/* Dark mode */
+.dark-mode{ background:#0b0b0d; color:#e8e8e8; }
+.dark-mode .card{ background:#282828; box-shadow:none; border:1px solid #3b85d5b7; }
+.dark-mode .nav-btn{ color:#e8e8e8; }
+.dark-mode .nav-btn.active{ background: rgba(0,123,255,0.08); color:var(--primary); }
+.dark-mode .product-item{ background: linear-gradient(180deg,#151519,#0f0f12); box-shadow:none; border:1px solid rgba(255,255,255,0.03); }
+.dark-mode .product-price, .dark-mode header small{ color:#cfcfd1; }
+.dark-mode .btn-primary{ filter:brightness(1.05); }
+
+/* Print styling for bill/history */
+@media print{
+  body *{ visibility: hidden; }
+  #bill-section, #bill-section *{ visibility: visible; }
+  #bill-section{ position: absolute; left:0; top:0; width:100%; }
+  .print-only{ display:block; }
+}
+

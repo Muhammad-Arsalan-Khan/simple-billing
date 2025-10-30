@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Billing Software — Professional</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="card sidebar">
+      <nav>
+        <button class="nav-btn active" data-view="home">Home</button>
+        <button class="nav-btn" data-view="profile">Profile</button>
+        <button class="nav-btn" data-view="history">Bill History</button>
+        <hr />
+        <button id="toggle-dark" class="btn">Toggle Dark Mode</button>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+      <!-- HOME / Billing -->
+      <section id="view-home" class="card view">
+        <header>
+          <div>
+            <h1 id="header-title">Billing Software</h1>
+            <small id="header-sub">Phone: - | Address: -</small>
+            <div id="header-offer" class="offer-line"></div>
+          </div>
+          <div class="header-actions">
+            <button id="generate-bill-btn" class="btn btn-success">Generate Bill</button>
+            <button id="print-last-bill" class="btn">Print Bill</button>
+            <button id="clear-cart-btn" class="btn">Clear Cart</button>
+          </div>
+        </header>
+
+        <!-- Add product -->
+        <div class="add-section" style="margin-top:12px">
+          <input id="product-name" type="text" placeholder="Product Name" />
+          <input id="product-price" type="number" placeholder="Price" />
+          <span id="emoji-upload" title="Upload image" style="font-size:22px; cursor:pointer">⬆️</span>
+          <input id="product-img" type="file" accept="image/*" />
+          <button id="add-product-btn" class="btn btn-primary">Add Product</button>
+          <input id="search" type="text" placeholder="Search product..." style="margin-left:auto" />
+        </div>
+
+        <h2 style="margin-top:14px">Products</h2>
+        <div id="product-list"></div>
+
+        <h2 style="margin-top:18px">Cart</h2>
+        <button id="clear-cart-btn-bottom" class="btn">Clear Cart</button>
+        <div id="cart"></div>
+        <p id="total" style="text-align:right; font-weight:700;">Total: PKR 0.00</p>
+
+        <div id="bill-section">
+          <h2>Last Bill</h2>
+          <div id="bill-list"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section id="view-profile" class="card view" style="display:none">
+        <h2>Profile (Shop)</h2>
+
+        <div class="profile-row">
+          <div style="flex:1">
+            <label>Shop Name</label><br />
+            <input id="shopNameInput" type="text" placeholder="e.g. Taj Mahal Fast Food" />
+            <div style="margin-top:6px"><button id="clear-shop" class="btn">Clear Shop Name</button></div>
+          </div>
+
+          <div style="flex:1">
+            <label>Address</label><br />
+            <input id="addressInput" type="text" placeholder="Shop address" />
+            <div style="margin-top:6px"><button id="clear-address" class="btn">Clear Address</button></div>
+          </div>
+        </div>
+
+        <div class="profile-row">
+          <div style="flex:1">
+            <label>Offer (visible on bill)</label><br />
+            <input id="offerInput" type="text" placeholder="e.g. buy 2 zinger get 1 free" />
+            <div style="margin-top:6px; display:flex; gap:8px">
+              <button id="save-profile-btn" class="btn btn-primary">Save Offer</button>
+              <button id="clear-offer" class="btn">Clear Offer</button>
+            </div>
+          </div>
+
+          <div style="flex:1">
+            <label>Phone Numbers (comma separated)</label><br />
+            <input id="phoneInput" type="text" placeholder="0312-xxxxxxx, 0300-xxxxxxx" />
+            <div style="margin-top:6px"><button id="clear-phone" class="btn">Clear Phones</button></div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button id="save-profile" class="btn btn-success">Update Profile</button>
+          <button id="clear-history" class="btn btn-danger">Clear Bill History</button>
+          <button id="download-history-pdf" class="btn">Download History (PDF)</button>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section id="view-history" class="card view" style="display:none">
+        <h2>Bill History</h2>
+        <div id="history-list" class="history-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
