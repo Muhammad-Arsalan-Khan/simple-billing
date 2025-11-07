@@ -62,59 +62,167 @@ function formatCurrency(n){ return "PKR " + Number(n).toFixed(2); }
 function idNow(){ return Date.now().toString(); } // numeric-like id
 
 // ---------- Render Products (card style like you wanted) ----------
+// function renderProducts(search = "") {
+//   productList.innerHTML = "";
+//   // filter produces a list view; we will attach data-id attributes and always find product by id
+//   const visible = products.filter(p => p.name.toLowerCase().includes((search || "").toLowerCase()));
+
+//   visible.forEach((p) => {
+//     const div = document.createElement("div");
+//     div.className = "product-item";
+//     div.innerHTML = `
+//       <div class="editDeleteBtn">
+//         <button data-action="delete" data-id="${p.id}" title="Delete">🗑️</button>
+//         <button data-action="edit" data-id="${p.id}" title="Edit">✎</button>
+//       </div>
+//       <div class="product-image">
+//         <img src="${p.image || ''}" alt="${p.name}" />
+//       </div>
+//       <div class="product-details">
+//         <h4 class="product-name">${p.name}</h4>
+//         <p class="product-price">Price: ${formatCurrency(p.price)}</p>
+//       </div>
+//       <div class="product-actions">
+//         <div class="qty-inline" style="align-items:center">
+//           <button class="qty-dec" data-id="${p.id}">−</button>
+//           <div id="qty-${p.id}" style="min-width:28px; text-align:center;">${p.tempQty || 0}</div>
+//           <button class="qty-inc" data-id="${p.id}">+</button>
+//         </div>
+//         <button class="addBtn" data-action="select" data-id="${p.id}">Add</button>
+//       </div>
+//     `;
+
+//     // single delegated click handler for this card
+//     div.addEventListener("click", (ev) => {
+//       const btn = ev.target.closest("button");
+//       if (!btn) return;
+//       const action = btn.dataset.action;        // e.g. "delete", "edit", "select" or undefined for qty buttons
+//       const id = btn.dataset.id;               // product id (string)
+//       if (!id) return;
+
+//       // find product index in main products array using id
+//       const idx = products.findIndex(x => String(x.id) === String(id));
+//       if (idx === -1) return; // product not found (shouldn't happen)
+
+//       // route actions
+//       if (action === "delete") return deleteProduct(idx);
+//       if (action === "edit")   return editProduct(idx);
+//       if (btn.classList.contains("qty-inc")) return increaseQtyById(id);
+//       if (btn.classList.contains("qty-dec")) return decreaseQtyById(id);
+//       if (action === "select") return selectProductById(id);
+//     });
+
+//     productList.appendChild(div);
+//   });
+// }
 function renderProducts(search = "") {
   productList.innerHTML = "";
-  // filter produces a list view; we will attach data-id attributes and always find product by id
-  const visible = products.filter(p => p.name.toLowerCase().includes((search || "").toLowerCase()));
+
+  const visible = products.filter(p =>
+    p.name.toLowerCase().includes((search || "").toLowerCase())
+  );
 
   visible.forEach((p) => {
+    // ensure initial quantity = 1
+    if (!p.tempQty || p.tempQty < 1) p.tempQty = 1;
+
     const div = document.createElement("div");
     div.className = "product-item";
+
     div.innerHTML = `
       <div class="editDeleteBtn">
         <button data-action="delete" data-id="${p.id}" title="Delete">🗑️</button>
         <button data-action="edit" data-id="${p.id}" title="Edit">✎</button>
       </div>
+
       <div class="product-image">
         <img src="${p.image || ''}" alt="${p.name}" />
       </div>
+
       <div class="product-details">
         <h4 class="product-name">${p.name}</h4>
         <p class="product-price">Price: ${formatCurrency(p.price)}</p>
       </div>
+
       <div class="product-actions">
-        <div class="qty-inline" style="align-items:center">
+        <div class="qty-inline">
           <button class="qty-dec" data-id="${p.id}">−</button>
-          <div id="qty-${p.id}" style="min-width:28px; text-align:center;">${p.tempQty || 0}</div>
+          <input type="number" id="qty-${p.id}" value="${p.tempQty}" min="1" class="qty-input">
           <button class="qty-inc" data-id="${p.id}">+</button>
         </div>
         <button class="addBtn" data-action="select" data-id="${p.id}">Add</button>
       </div>
     `;
 
-    // single delegated click handler for this card
+    // handle all button actions
     div.addEventListener("click", (ev) => {
       const btn = ev.target.closest("button");
       if (!btn) return;
-      const action = btn.dataset.action;        // e.g. "delete", "edit", "select" or undefined for qty buttons
-      const id = btn.dataset.id;               // product id (string)
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
       if (!id) return;
 
-      // find product index in main products array using id
       const idx = products.findIndex(x => String(x.id) === String(id));
-      if (idx === -1) return; // product not found (shouldn't happen)
+      if (idx === -1) return;
 
-      // route actions
       if (action === "delete") return deleteProduct(idx);
-      if (action === "edit")   return editProduct(idx);
-      if (btn.classList.contains("qty-inc")) return increaseQtyById(id);
-      if (btn.classList.contains("qty-dec")) return decreaseQtyById(id);
+      if (action === "edit") return editProduct(idx);
+
+      // Increment
+      if (btn.classList.contains("qty-inc")) {
+        products[idx].tempQty++;
+        updateQtyInput(id);
+        saveData();
+      }
+
+      // Decrement (min = 1)
+      if (btn.classList.contains("qty-dec")) {
+        if (products[idx].tempQty > 1) {
+          products[idx].tempQty--;
+          updateQtyInput(id);
+          saveData();
+        }
+      }
+
+      // Add to cart
       if (action === "select") return selectProductById(id);
+    });
+
+    // input field typing + validation
+    const qtyInput = div.querySelector(`#qty-${p.id}`);
+
+    // typing allowed freely
+    qtyInput.addEventListener("input", (e) => {
+      const val = e.target.value; // don’t force conversion here
+      const idx = products.findIndex(x => String(x.id) === String(p.id));
+      if (idx !== -1) products[idx].tempQty = val; // store whatever typed
+    });
+
+    // auto-correct when focus leaves the field
+    qtyInput.addEventListener("blur", (e) => {
+      let val = parseInt(e.target.value);
+      if (isNaN(val) || val < 1) val = 1; // auto-fix invalid
+      const idx = products.findIndex(x => String(x.id) === String(p.id));
+      if (idx !== -1) {
+        products[idx].tempQty = val;
+        e.target.value = val;
+        saveData();
+      }
     });
 
     productList.appendChild(div);
   });
 }
+
+function updateQtyInput(id) {
+  const p = products.find(x => String(x.id) === String(id));
+  if (!p) return;
+  const input = document.getElementById(`qty-${id}`);
+  if (input) input.value = p.tempQty;
+}
+
+
+
 
 // increase / decrease using product id (keeps tempQty on product object)
 function increaseQtyById(id){
