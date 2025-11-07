@@ -131,7 +131,9 @@ input[type="text"], input[type="number"]{
   font-weight:700;
 }
 .qty-inline{ display:flex; gap:6px; align-items:center; }
-.qty-inline button{ width:34px; height:34px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
+.qty-inline button{ width:30px; height:30px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
+
+
 
 /* Cart */
 #cart{ display:grid; gap:8px; margin-top:10px; }
@@ -185,3 +187,10 @@ th{ background:#f7f7f7; font-weight:700; }
   .print-only{ display:block; }
 }
 
+/* Fix: Make quantity input smaller inside product cards */
+.product-actions input[type="number"] {
+  width: 70px !important;     /* smaller width */
+  min-width: unset !important; /* override global min-width */
+  text-align: center;
+  padding: 6px 4px;
+}
