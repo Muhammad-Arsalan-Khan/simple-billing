@@ -50,4 +50,6 @@ It allows users to manage products, generate bills, maintain billing history, an
 ## ⚙️ Installation & Usage
 
 1. **Clone or Download** this repository.  
-   ```bashhttps://github.com/Muhammad-Arsalan-Khan/billing-system.git
+   ```bash
+https://github.com/Muhammad-Arsalan-Khan/billing-system.git
+```
