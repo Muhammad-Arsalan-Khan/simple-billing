@@ -61,60 +61,6 @@ function saveData() {
 function formatCurrency(n){ return "PKR " + Number(n).toFixed(2); }
 function idNow(){ return Date.now().toString(); } // numeric-like id
 
-// ---------- Render Products (card style like you wanted) ----------
-// function renderProducts(search = "") {
-//   productList.innerHTML = "";
-//   // filter produces a list view; we will attach data-id attributes and always find product by id
-//   const visible = products.filter(p => p.name.toLowerCase().includes((search || "").toLowerCase()));
-
-//   visible.forEach((p) => {
-//     const div = document.createElement("div");
-//     div.className = "product-item";
-//     div.innerHTML = `
-//       <div class="editDeleteBtn">
-//         <button data-action="delete" data-id="${p.id}" title="Delete">🗑️</button>
-//         <button data-action="edit" data-id="${p.id}" title="Edit">✎</button>
-//       </div>
-//       <div class="product-image">
-//         <img src="${p.image || ''}" alt="${p.name}" />
-//       </div>
-//       <div class="product-details">
-//         <h4 class="product-name">${p.name}</h4>
-//         <p class="product-price">Price: ${formatCurrency(p.price)}</p>
-//       </div>
-//       <div class="product-actions">
-//         <div class="qty-inline" style="align-items:center">
-//           <button class="qty-dec" data-id="${p.id}">−</button>
-//           <div id="qty-${p.id}" style="min-width:28px; text-align:center;">${p.tempQty || 0}</div>
-//           <button class="qty-inc" data-id="${p.id}">+</button>
-//         </div>
-//         <button class="addBtn" data-action="select" data-id="${p.id}">Add</button>
-//       </div>
-//     `;
-
-//     // single delegated click handler for this card
-//     div.addEventListener("click", (ev) => {
-//       const btn = ev.target.closest("button");
-//       if (!btn) return;
-//       const action = btn.dataset.action;        // e.g. "delete", "edit", "select" or undefined for qty buttons
-//       const id = btn.dataset.id;               // product id (string)
-//       if (!id) return;
-
-//       // find product index in main products array using id
-//       const idx = products.findIndex(x => String(x.id) === String(id));
-//       if (idx === -1) return; // product not found (shouldn't happen)
-
-//       // route actions
-//       if (action === "delete") return deleteProduct(idx);
-//       if (action === "edit")   return editProduct(idx);
-//       if (btn.classList.contains("qty-inc")) return increaseQtyById(id);
-//       if (btn.classList.contains("qty-dec")) return decreaseQtyById(id);
-//       if (action === "select") return selectProductById(id);
-//     });
-
-//     productList.appendChild(div);
-//   });
-// }
 function renderProducts(search = "") {
   productList.innerHTML = "";
 
@@ -780,6 +726,34 @@ function printHtmlForPrint(html) {
   };
 }
 
+//-- gram calculator
+const basePriceInput = document.getElementById("basePrice");
+const baseWeightInput = document.getElementById("baseWeight");
+const targetWeightInput = document.getElementById("targetWeight");
+const calculatedPriceInput = document.getElementById("calculatedPrice");
+const calculateBtn = document.getElementById("calculateBtn");
+
+calculateBtn.addEventListener("click", () => {
+  const basePrice = parseFloat(basePriceInput.value);
+  const baseWeight = parseFloat(baseWeightInput.value);
+  const targetWeight = parseFloat(targetWeightInput.value);
+
+  if(isNaN(basePrice) || basePrice <= 0){
+    alert("Enter valid Price for Base Weight");
+    return;
+  }
+  if(isNaN(baseWeight) || baseWeight <= 0){
+    alert("Enter valid Base Weight in grams");
+    return;
+  }
+  if(isNaN(targetWeight) || targetWeight <= 0){
+    alert("Enter valid Target Weight in grams");
+    return;
+  }
+
+  const price = (targetWeight / baseWeight) * basePrice;
+  calculatedPriceInput.value = price.toFixed(2) + " PKR";
+});
 
 
 

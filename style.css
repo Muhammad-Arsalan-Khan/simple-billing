@@ -178,6 +178,7 @@ th{ background:#f7f7f7; font-weight:700; }
 .dark-mode .product-item{ background: linear-gradient(180deg,#151519,#0f0f12); box-shadow:none; border:1px solid rgba(255,255,255,0.03); }
 .dark-mode .product-price, .dark-mode header small{ color:#cfcfd1; }
 .dark-mode .btn-primary{ filter:brightness(1.05); }
+.dark-mode .calculator {background:#282828;  box-shadow: 0 8px 24px rgba(218, 218, 218, 0.1); }
 
 /* Print styling for bill/history */
 @media print{
@@ -193,4 +194,14 @@ th{ background:#f7f7f7; font-weight:700; }
   min-width: unset !important; /* override global min-width */
   text-align: center;
   padding: 6px 4px;
+}
+
+.calculator {
+  background: #ffffff;
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
 }
