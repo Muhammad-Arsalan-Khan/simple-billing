@@ -6,7 +6,7 @@ It allows users to manage products, generate bills, maintain billing history, an
 
 ---
 
-Live : https://billing-softwar.netlify.app/
+🌍Live : https://billing-softwar.netlify.app/
 
 ## 🚀 Features
 
@@ -51,4 +51,5 @@ Live : https://billing-softwar.netlify.app/
 
 1. **Clone or Download** this repository.  
    ```bash
-   https://github.com/Muhammad-Arsalan-Khan/simple-billing.git
+https://github.com/Muhammad-Arsalan-Khan/billing-system.git
+
