@@ -130,6 +130,15 @@ input[type="text"], input[type="number"]{
   color:#fff;
   font-weight:700;
 }
+.addPriceBtn{
+  padding:6px 12px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:#fff;
+  font-weight:700;
+}
 .qty-inline{ display:flex; gap:6px; align-items:center; }
 .qty-inline button{ width:30px; height:30px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
 
