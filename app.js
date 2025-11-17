@@ -384,10 +384,10 @@ function renderCart() {
   cart.forEach((it, idx) => {
     // total += it.price * it.quantity;
     if (typeof it.quantity === "string" && it.quantity.includes("g")) {
-        // Gram-based item → price is already total for that gram amount
-        total += Number(it.price);
+      // Gram-based item → price is already total for that gram amount
+      total += Number(it.price);
     } else {
-        total += it.price * it.quantity;
+      total += it.price * it.quantity;
     }
     const div = document.createElement("div");
     div.className = "cart-item";
@@ -397,9 +397,10 @@ function renderCart() {
       <div>${formatCurrency(it.price)}</div>
       <div style="margin-left:6px">x ${it.quantity}</div>
       <div class="cart-actions">
-        ${typeof it.quantity === "string" && it.quantity.includes("g")
-        ? ``
-        : `<button class="cart-dec" data-i="${idx}">−</button>
+        ${
+          typeof it.quantity === "string" && it.quantity.includes("g")
+            ? ``
+            : `<button class="cart-dec" data-i="${idx}">−</button>
            <button class="cart-inc" data-i="${idx}">+</button>`
         }
         <button class="btn btn-danger cart-rem" data-i="${idx}">X</button>
@@ -564,56 +565,129 @@ function generateBill() {
   billList.appendChild(btn);
 }
 
-// ✅ Single clean print (no blank pages)
-function printBill(content) {
-  const printWindow = window.open("", "_blank", "width=800,height=600");
-  printWindow.document.write(`
-    <html>
-      <head>
-        <title>Print Bill</title>
-        <style>
-          @page { margin: 10mm; }
-          body {
-            font-family: Arial, sans-serif;
-            background: #fff;
-            color: #000;
-            margin: 0;
-            padding: 20px;
-          }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-          }
-          th, td {
-            border: 1px solid #ddd;
-            padding: 6px;
-            font-size: 14px;
-          }
-          th {
-            background: #f5f5f5;
-          }
-          .no-print { display: none; }
-        </style>
-      </head>
-      <body>
-        ${content.outerHTML}
-      </body>
-    </html>
-  `);
-  printWindow.document.close();
+// function printBill(content) {
+//   const printWindow = window.open("", "_blank", "width=600,height=800");
 
-  // Wait till content loads, then print once
-  printWindow.onload = () => {
-    printWindow.focus();
-    printWindow.print();
-    printWindow.onafterprint = () => printWindow.close();
-  };
-  //clear the bill table
-  billList.innerHTML = "";
-  //clear the cart table
-  cart = [];
-  saveData();
-  renderCart();
+//   printWindow.document.write(`
+//     <html>
+//       <head>
+//         <title>Print Bill</title>
+//         <style>
+//           @page {
+//             size: 80mm auto; 
+//             margin: 0;
+//           }
+//           body {
+//             font-family: Arial, sans-serif;
+//             background: #fff;
+//             color: #000;
+//             width: 80mm;
+//             margin: 0;
+//             padding: 0;
+//           }
+//           table {
+//             width: 100%;
+//             border-collapse: collapse;
+//           }
+//           th, td {
+//             border: 1px solid #000;
+//             padding: 4px;
+//             font-size: 12px;
+//           }
+//           th {
+//             background: #f5f5f5;
+//           }
+//           .no-print { display: none; }
+//         </style>
+//       </head>
+//       <body>
+//         ${content.outerHTML}
+//       </body>
+//     </html>
+//   `);
+
+//   printWindow.document.close();
+
+//   printWindow.onload = () => {
+//     printWindow.focus();
+//     printWindow.print();
+//     printWindow.onafterprint = () => printWindow.close();
+//   };
+
+//   // Clear UI after print
+//   billList.innerHTML = "";
+//   cart = [];
+//   saveData();
+//   renderCart();
+// }
+// ... (lines 683-703, where printBill function starts)
+
+function printBill(content) {
+    // Note: The window size (600x800) here only matters for screen view, 
+    // the print size is controlled by the CSS inside.
+    const printWindow = window.open("", "_blank", "width=600,height=800"); 
+
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Print Bill</title>
+                <style>
+                    /* CRITICAL: Set the actual page size to 80mm wide. 
+                       'size: 80mm auto' tells the printer the physical paper size.
+                    */
+                    @page {
+                        size: 80mm auto; /* 80mm width, height is automatic (as long as needed) */
+                        margin: 0;
+                    }
+                    body {
+                        font-family: Arial, sans-serif;
+                        background: #fff;
+                        color: #000;
+                        /* CRITICAL: Force the body width to 80mm and remove default margins/padding */
+                        width: 80mm; 
+                        margin: 0;
+                        padding: 0;
+                    }
+                    table {
+                        width: 100%; /* Will take 100% of the 80mm body */
+                        border-collapse: collapse;
+                        /* Optional: Add a small padding here if needed, e.g., padding: 2mm; */
+                    }
+                    th, td {
+                        /* Remove hard borders that look bad on thermal receipt */
+                        border: none !important; 
+                        padding: 2px 0; /* Minimal vertical padding, no horizontal */
+                        font-size: 11px; /* Smaller font for thermal print */
+                        line-height: 1.2;
+                    }
+                    /* Re-add specific borders for total line if desired */
+                    tr:last-child td {
+                         border-top: 2px solid #000 !important;
+                    }
+                    .no-print { display: none; }
+                </style>
+            </head>
+            <body>
+                <div style="width: 100%; padding: 4px;">
+                    ${content.outerHTML}
+                </div>
+            </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+        printWindow.focus();
+        printWindow.print();
+        printWindow.onafterprint = () => printWindow.close();
+    };
+
+    // Clear UI after print
+    billList.innerHTML = "";
+    cart = [];
+    saveData();
+    renderCart();
 }
 
 // ---------- History functions (printable PDF via print dialog) ----------
@@ -699,20 +773,14 @@ function reprintBill(id) {
   t.appendChild(foot);
 
   // print this bill immediately
-  printHtmlForPrint(t.outerHTML);
+  printBill(t)
+  // printBill(t.outerHTML)
+  // printHtmlForPrint(t.outerHTML);
 }
 
 // download history as printable PDF (we open a window with a table and call print)
 function downloadHistoryPdf() {
   if (bills.length === 0) return alert("No history to download");
-
-  // let lineTotal;
-  // if (typeof it.qty === "string" && it.qty.includes("g")) {
-  //   lineTotal = Number(it.price);
-  // } else {
-  //   lineTotal = it.qty * it.price;
-  // }
-
   const tbl = document.createElement("table");
   tbl.style.width = "100%";
   tbl.innerHTML = `
@@ -737,13 +805,16 @@ function downloadHistoryPdf() {
   });
 
   tbl.appendChild(tb);
-
   // Use same print function with styling
   printHtmlForPrint(`
     <h2 style="text-align:center;">Billing History</h2>
     ${tbl.outerHTML}
   `);
 }
+
+
+
+
 
 // ---------- Profile handlers ----------
 function loadProfileToForm() {
@@ -845,7 +916,11 @@ if (generateBillBtn) generateBillBtn.addEventListener("click", generateBill);
 if (printLastBillBtn)
   printLastBillBtn.addEventListener("click", () => {
     if (!billList.innerHTML) return alert("No bill to print.");
-    printHtmlForPrint(billList.innerHTML);
+    // printBill(billList.innerHTML)
+    // printHtmlForPrint(billList.innerHTML);
+    const billElement = billList.querySelector("table"); // <-- Get actual table element
+  if (!billElement) return alert("Bill not ready!");
+  printBill(billElement); // <-- Pass ELEMENT, not string
   });
 if (clearCartBtn) clearCartBtn.addEventListener("click", clearCart);
 if (clearCartBtnBottom) clearCartBtnBottom.addEventListener("click", clearCart);
@@ -884,36 +959,80 @@ if (emojiUpload && productImgInput)
   });
 });
 
-// ✅ Common Print Function (used by reprint & history download)
+// // ✅ Common Print Function (used by reprint & history download)
+// function printHtmlForPrint(html) {
+//   const printWindow = window.open("", "_blank", "width=800,height=600");
+//   printWindow.document.write(`
+//     <html>
+//       <head>
+//         <title>Print</title>
+//         <style>
+//           @page { margin: 10mm; }
+//           body {
+//             font-family: Arial, sans-serif;
+//             background: #fff;
+//             color: #000;
+//             margin: 0;
+//             padding: 20px;
+//           }
+//           table {
+//             width: 100%;
+//             border-collapse: collapse;
+//             margin-top: 10px;
+//           }
+//           th, td {
+//             border: 1px solid #ddd;
+//             padding: 6px;
+//             font-size: 14px;
+//           }
+//           th {
+//             background: #f5f5f5;
+//           }
+//           h2 { text-align: center; margin-bottom: 10px; }
+//         </style>
+//       </head>
+//       <body>
+//         ${html}
+//       </body>
+//     </html>
+//   `);
+//   printWindow.document.close();
+
+//   printWindow.onload = () => {
+//     printWindow.focus();
+//     printWindow.print();
+//     printWindow.onafterprint = () => printWindow.close();
+//   };
+// }
 function printHtmlForPrint(html) {
-  const printWindow = window.open("", "_blank", "width=800,height=600");
+  const printWindow = window.open("", "_blank", "width=600,height=800");
+
   printWindow.document.write(`
     <html>
       <head>
         <title>Print</title>
         <style>
-          @page { margin: 10mm; }
+          @page {
+            size: auto;
+            margin: 0;
+          }
           body {
             font-family: Arial, sans-serif;
             background: #fff;
             color: #000;
             margin: 0;
-            padding: 20px;
+            padding: 0;
           }
           table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
           }
           th, td {
-            border: 1px solid #ddd;
-            padding: 6px;
-            font-size: 14px;
+            border: 1px solid #000;
+            padding: 4px;
+            font-size: 12px;
           }
-          th {
-            background: #f5f5f5;
-          }
-          h2 { text-align: center; margin-bottom: 10px; }
+          h2 { text-align: center; margin-bottom: 6px; }
         </style>
       </head>
       <body>
@@ -921,6 +1040,7 @@ function printHtmlForPrint(html) {
       </body>
     </html>
   `);
+
   printWindow.document.close();
 
   printWindow.onload = () => {
@@ -929,6 +1049,7 @@ function printHtmlForPrint(html) {
     printWindow.onafterprint = () => printWindow.close();
   };
 }
+
 
 //-- gram calculator
 const basePriceInput = document.getElementById("basePrice");
