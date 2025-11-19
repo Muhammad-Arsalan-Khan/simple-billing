@@ -41,12 +41,15 @@ The Add by Price button allows the shopkeeper to add items based on the amount t
 
 How it works
 
-The user clicks Add by Price on a product that has a gram value defined.
-A prompt asks for the amount (PKR) the customer wants to purchase.
-The system automatically calculates how many grams can be purchased for that amount.
-The item is added to the cart with:
-Price = entered amount
-Quantity = calculated grams (e.g., “480g”)
+1.The user clicks Add by Price on a product that has a gram value defined.
+
+2.A prompt asks for the amount (PKR) the customer wants to purchase.
+
+3.The system automatically calculates how many grams can be purchased for that amount.
+
+4.The item is added to the cart with:
+  >Price = entered amount
+  >Quantity = calculated grams (e.g., “480g”)
 
 **Purpose**
 
