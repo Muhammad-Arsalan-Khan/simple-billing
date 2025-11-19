@@ -35,6 +35,7 @@ It allows users to manage products, generate bills, maintain billing history, an
 - Preferences saved locally for future visits.
 
 **Add by Price**
+
 Some products in this billing system include a weight-based price structure (for example: Chicken – PKR 1200 per 1000g).
 The Add by Price button allows the shopkeeper to add items based on the amount the customer wants to spend, instead of quantity or grams.
 
