@@ -48,8 +48,9 @@ How it works
 3.The system automatically calculates how many grams can be purchased for that amount.
 
 4.The item is added to the cart with:
-  >Price = entered amount
-  >Quantity = calculated grams (e.g., “480g”)
+  .Price = entered amount
+  
+  .Quantity = calculated grams (e.g., “480g”)
 
 **Purpose**
 
