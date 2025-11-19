@@ -34,6 +34,21 @@ It allows users to manage products, generate bills, maintain billing history, an
 - One-click toggle between light and dark theme.  
 - Preferences saved locally for future visits.
 
+**Add by Price**
+Some products in this billing system include a weight-based price structure (for example: Chicken – PKR 1200 per 1000g).
+The Add by Price button allows the shopkeeper to add items based on the amount the customer wants to spend, instead of quantity or grams.
+
+How it works
+The user clicks Add by Price on a product that has a gram value defined.
+A prompt asks for the amount (PKR) the customer wants to purchase.
+The system automatically calculates how many grams can be purchased for that amount.
+The item is added to the cart with:
+Price = entered amount
+Quantity = calculated grams (e.g., “480g”)
+**Purpose**
+This feature is designed for shops that sell products by weight, where customers commonly order by price instead of fixed grams.
+It makes the billing faster, more accurate, and avoids manual calculations.
+
 ---
 
 ## 🧠 Tech Stack
